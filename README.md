@@ -59,49 +59,90 @@ When analyzing the results, we chose to use **PPO**, **SAC** and **TRPO**.
 ### First Phase:
 Initially, we decided to **test small rewards** to understand the **impact each of them** had and whether their use was justified or not, having trained the models with **30M timesteps**. For this we made two tests:
 
-![multimedia1](https://github.com/user-attachments/assets/3f9b8388-2a3c-4fe1-953a-76a7b5ce3b4f)
+| Tests | Rewards | Penalties | Video |
+| :- | :- | :- | :- |
+|Test 1 | - Overcome steep terrain | - Vertical sudden moves (ex: falling) <br> - Severe instability (ex: torso inclination) | <img width="300" height="200" src="https://github.com/user-attachments/assets/1e3b8145-3318-46ee-8318-d16fcef7b98d"> |
+| Test 2 | - Alternate feet | - Vertical sudden moves (ex: falling) | <img width="300" height="200" src="https://github.com/user-attachments/assets/3f5c17bf-9775-4e35-9160-e42228544a17"> |
 
 <br>
 
-## The Interface:
-When running 'interface.py' you will get to choose the size of the environment. Then you can do the following by pressing the controls:
-B + Click -> You create a **bin** on the square you clicked;
-T + Click -> You create a **truck** on the square you clicked;
-R + Click -> You create a **roadblock** on the square you clicked;
-1 -> You set traffict level to 1;
-2 -> You set traffict level to 2;
-3 -> You set traffict level to 3;
-4 -> You set traffict level to 4;
-5 -> You set traffict level to 5;
-0 -> You set traffict level to 0 (clear all traffic);
-S -> You **START** the program
+### Second Phase:
+After detecting the initial errors, we realized that we should encourage the agent to walk forward and remove the alternating use of both feet:
 
-**Notes:** 
-- When you create traffic you only define how much traffic is going to be created, you can't choose where as it is generated randomly.
-- Traffic is represented as an orange line
-- Roadblocks are red squares
--  The truck with a semi red square on top of it is broken by a random time, when it is operational again the square will disappear. 
-- Trucks can break down at any time and randomly, you can't controle it. 
-- The blue square is the central
-- On the right side you have the status were you can see de capacity of each bin (the color changes accordingly) and the capacity of trucks and its fuel
+**Rewards:**
+- Overcome steep terrain
+- Moving forward
 
-<br>
+**Penalties:**
+- Vertical sudden moves (ex: falling)
+- Severe instability (ex: torso inclination)
+- Stands still for a long time or stops moving
+- Agent fails
+
+**Videos:**
+
+| PPO | TRPO |
+| :-: | :-: |
+| <img width="300" height="200" src=""> | <img width="300" height="200" src="https://github.com/user-attachments/assets/f131fba1-c6ae-46eb-b7bb-e9ef063b2616"> |
+
+| SAC | CONTROL |
+| :-: | :-: |
+| <img width="300" height="200" src="https://github.com/user-attachments/assets/e0cf5cc0-5fa5-4a8c-af59-6628ece6672f"> | <img width="300" height="200" src="https://github.com/user-attachments/assets/230e8816-ee29-4d46-a064-cabef5660019"> |
+
+### Third Phase:
+In an attempt to further improve the second phase, we decided to do a third test by changing the rewards again and truing to correct the minor errors detected in the previous phase.
+
+**Rewards:**
+- Overcome steep terrain
+- Moving forward
+- Lifting its legs from the ground
+- Using each leg the same number of times
+
+**Penalties:**
+- Vertical sudden moves (ex: falling)
+- Severe instability (ex: torso inclination)
+- Stands still for a long time or stops moving
+- Agent fails
+
+**Videos:**
+
+| PPO | TRPO |
+| :-: | :-: |
+| <img width="300" height="200" src="https://github.com/user-attachments/assets/0db319d2-1692-408e-86d1-7f7cb7db89bc"> | <img width="300" height="200" src="https://github.com/user-attachments/assets/ff82d86f-788e-421e-8c27-e2fe8ccc892a"> |
+
+| SAC | CONTROL |
+| :-: | :-: |
+| <img width="300" height="200" src="https://github.com/user-attachments/assets/6ffaee9f-6481-48d0-8d9e-6720e48f5aa3"> | <img width="300" height="200" src="https://github.com/user-attachments/assets/ef461159-1d1d-42da-82f6-18eca8472ed0"> |
+
+
+## Other Tests:
+In addition to the tests demonstrated above, we also performed two other tests:
+
+### Feet VS No Feet:
+In order to try to understand if the agent would move better with feet, we **created an agent with feet**.
 
 <p align="center">
-  <img width="850" height="400" src="https://github.com/user-attachments/assets/4a73e465-0e3f-4f76-9eaa-ce93dcd89b8b">
+  <img width="700" height="250" src="https://github.com/user-attachments/assets/2fce22f6-0b0d-49b5-a912-f197f4c39033">
+</p>
+
+### Hiperparameter Tunning
 
 
 <br>
 
 ## About the repository:
 
-- Assignment.pdf ➡️Project statement
-- bin_agent.py ➡️ The code of the bin agent;
-- truck_agent.py ➡️ The code of the truck agent;
-- environment.py ➡️ The code of the environment;
-- interface.py ➡️ The code of the interface;
-- prosody.txt ➡️ How your 'prosody.cfg.lua' should be;
-- Multi-Agent-Autonomous-Waste-Collection-System.pdf ➡️ The tests and its results and more info about what was done.
+- rewards ➡️ Its a folder with python files with the different rewards that were used;
+- Assignment.pdf ➡️ Project statement;
+- BipedalWalker.pptx ➡️ Its a Powerpoint with information about the work developed;
+- ExtraBW.pptx ➡️ Its a Powerpoint with some extra information about the work developed (graphs, videos...);
+- bipedal_walker_custom.txt ➡️ If you wanna try the BipedalWalker with feet this is what you have to use;
+- rewards_train.py ➡️ The code for trainning the agent with rewards;
+- test_model.py ➡️ The code used to test the agents;
+- train_models.py ➡️ The code used to train the agents.
+
+Note:
+- When trainning agents we are training several algorihtms at the same time, you can choose which ones you are using and how many environments at the same time for each algorithm, and if you are using CPU or GPU for each algorithm.
 
 <br>
 
