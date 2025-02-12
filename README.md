@@ -59,7 +59,8 @@ When analyzing the results, we chose to use **PPO**, **SAC** and **TRPO**.
 ### First Phase:
 Initially, we decided to **test small rewards** to understand the **impact each of them** had and whether their use was justified or not, having trained the models with **30M timesteps**. For this we made two tests:
 
-https://github.com/user-attachments/assets/3f9b8388-2a3c-4fe1-953a-76a7b5ce3b4f
+![multimedia1](https://github.com/user-attachments/assets/3f9b8388-2a3c-4fe1-953a-76a7b5ce3b4f)
+
 <br>
 
 ## The Interface:
